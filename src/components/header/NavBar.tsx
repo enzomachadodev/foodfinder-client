@@ -2,8 +2,6 @@
 
 import Container from "../Container";
 import UserMenu from "./UserMenu";
-import { useContext } from "react";
-import { AuthContext } from "@/contexts/authContext";
 import { User } from "@/interfaces";
 
 interface NavBarProps {

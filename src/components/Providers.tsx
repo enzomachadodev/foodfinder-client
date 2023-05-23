@@ -1,6 +1,5 @@
 "use client";
 
-import { AuthProvider } from "@/contexts/authContext";
 import { ModalProvider } from "@/contexts/modalContext";
 
 interface ProviderProps {
@@ -8,11 +7,7 @@ interface ProviderProps {
 }
 
 const Providers = ({ children }: ProviderProps) => {
-	return (
-		<ModalProvider>
-			<AuthProvider>{children}</AuthProvider>
-		</ModalProvider>
-	);
+	return <ModalProvider>{children}</ModalProvider>;
 };
 
 export default Providers;

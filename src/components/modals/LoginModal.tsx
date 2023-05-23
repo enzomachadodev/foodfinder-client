@@ -15,14 +15,12 @@ import api from "@/services/api";
 import { toast } from "react-hot-toast";
 import { AxiosError } from "axios";
 import { setCookie } from "nookies";
-import { AuthContext } from "@/contexts/authContext";
 import { loginUserFormSchema } from "@/schemas/user";
 
 type LoginUserFormData = z.infer<typeof loginUserFormSchema>;
 
 const LoginModal = () => {
 	const { useLoginModal, useRegisterModal } = useContext(ModalContext);
-	const { getCurrentUser } = useContext(AuthContext);
 	const [loading, setLoading] = useState(false);
 	const router = useRouter();
 
