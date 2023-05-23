@@ -1,8 +1,6 @@
 import getRestaurantById from "@/actions/getRestaurantById";
 import RestaurantClient from "./RestaurantClient";
 import EmptyState from "@/components/EmptyState";
-import ClientOnly from "@/components/ClientOnly";
-import { Restaurant } from "@/interfaces";
 import getCurrentUser from "@/actions/getCurrentUser";
 
 interface IParams {
