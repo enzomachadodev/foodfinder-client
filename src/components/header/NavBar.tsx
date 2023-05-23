@@ -4,12 +4,15 @@ import Container from "../Container";
 import UserMenu from "./UserMenu";
 import { useContext } from "react";
 import { AuthContext } from "@/contexts/authContext";
+import { User } from "@/interfaces";
 
-const NavBar = () => {
-	const { currentUser } = useContext(AuthContext);
+interface NavBarProps {
+	currentUser: User;
+}
 
+const NavBar = ({ currentUser }: NavBarProps) => {
 	return (
-		<header className="w-full fixed top-0 left-0">
+		<header className="w-full fixed top-0 left-0 border-b-[1px] border-gray-100 shadow-sm">
 			<Container>
 				<div
 					className="
