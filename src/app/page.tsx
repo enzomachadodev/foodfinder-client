@@ -1,10 +1,19 @@
+import getAllRestaurants from "@/actions/getAllRestaurants";
 import Container from "@/components/Container";
-import Image from "next/image";
+import EmptyState from "@/components/EmptyState";
+import RestaurantsList from "@/components/RestaurantsList";
+const Home = async () => {
+	const restaurants = await getAllRestaurants();
 
-export default function Home() {
+	if (!restaurants) {
+		return <EmptyState />;
+	}
+
 	return (
 		<Container>
-			<h1>teste</h1>
+			<RestaurantsList restaurants={restaurants} />
 		</Container>
 	);
-}
+};
+
+export default Home;
