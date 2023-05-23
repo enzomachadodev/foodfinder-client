@@ -16,11 +16,7 @@ import { toast } from "react-hot-toast";
 import { AxiosError } from "axios";
 import { setCookie } from "nookies";
 import { AuthContext } from "@/contexts/authContext";
-
-const loginUserFormSchema = z.object({
-	email: z.string().nonempty("Email é obrigatório").email("Insira um email válido"),
-	password: z.string().nonempty("Senha é obrigatório"),
-});
+import { loginUserFormSchema } from "@/schemas/user";
 
 type LoginUserFormData = z.infer<typeof loginUserFormSchema>;
 
@@ -66,7 +62,7 @@ const LoginModal = () => {
 				api.defaults.headers.common.Authorization = `Bearer ${token}`;
 
 				setLoading(false);
-				getCurrentUser();
+				router.refresh();
 
 				reset();
 				loginModal.onClose();

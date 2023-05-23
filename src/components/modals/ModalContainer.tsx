@@ -48,6 +48,7 @@ const ModalContainer = ({ isOpen, onClose, title, children }: ModalProps) => {
                     h-full
                     lg:h-auto
                     md:h-auto
+                    overflow-hidden
                 "
 			>
 				<div
@@ -65,7 +66,8 @@ const ModalContainer = ({ isOpen, onClose, title, children }: ModalProps) => {
                     md:shadow-lg
                     flex
                     flex-col
-                    justify-center
+                    justify-start
+                    overflow-y-auto
                     bg-white
                     p-8
                 `}
