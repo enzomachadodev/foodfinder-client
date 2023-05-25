@@ -8,51 +8,50 @@ import { User } from "@/interfaces";
 import Avatar from "./Avatar";
 import { CiLogout } from "react-icons/ci";
 import { MdAddBusiness, MdFoodBank, MdLogout } from "react-icons/md";
+import { destroyCookie, parseCookies } from "nookies";
+import { useRouter } from "next/navigation";
+import logoutUser from "@/actions/logoutUser";
 
 interface UserBoxProps {
 	currentUser: User | null;
 }
 
 const UserMenu = ({ currentUser }: UserBoxProps) => {
-	const { useLoginModal, useRegisterModal } = useContext(ModalContext);
+	const { useLoginModal, useRegisterModal, useRestaurantModal } = useContext(ModalContext);
 	const [openMenu, setOpenMenu] = useState(false);
+
+	const router = useRouter();
 
 	const loginModal = useLoginModal();
 	const registerModal = useRegisterModal();
+	const addRestaurantModal = useRestaurantModal("create");
+
+	const handleLogout = () => {
+		console.log("passou aqui");
+		logoutUser();
+		router.refresh();
+	};
+
+	const handleAddRestaurant = () => {
+		addRestaurantModal.onOpen();
+		setOpenMenu(false);
+	};
+
+	const handleMyRestaurants = () => {};
 
 	if (!currentUser) {
 		return (
-			<div
-				className="
-                flex
-                gap-4
-            "
-			>
+			<div className="flex gap-4">
 				<GhostButton onClick={loginModal.onOpen} type="button" label="Entrar" />
 				<SolidButton onClick={registerModal.onOpen} type="button" label="Registre-se" />
 			</div>
 		);
 	}
 	return (
-		<div
-			className="
-				relative
-				
-		"
-		>
-			<div
-				className="
-						flex
-						items-center
-						gap-2
-			"
-			>
+		<div className="relative">
+			<div className="flex items-center gap-2">
 				<h2>{currentUser.name}</h2>
-				<Avatar
-					image={currentUser.image}
-					logout={() => {}}
-					onClick={() => setOpenMenu(!openMenu)}
-				/>
+				<Avatar image={currentUser.image} onClick={() => setOpenMenu(!openMenu)} />
 			</div>
 			{openMenu && (
 				<div
@@ -74,6 +73,7 @@ const UserMenu = ({ currentUser }: UserBoxProps) => {
 							"
 				>
 					<div
+						onClick={handleAddRestaurant}
 						className="
 							w-full
 							p-2
@@ -89,6 +89,7 @@ const UserMenu = ({ currentUser }: UserBoxProps) => {
 						Adicionar Restaurante
 					</div>
 					<div
+						onClick={handleMyRestaurants}
 						className="
 							w-full
 							p-2
@@ -103,6 +104,7 @@ const UserMenu = ({ currentUser }: UserBoxProps) => {
 						Meus estabelecimentos
 					</div>
 					<div
+						onClick={handleLogout}
 						className="
 							w-full
 							p-2
@@ -114,7 +116,7 @@ const UserMenu = ({ currentUser }: UserBoxProps) => {
 					"
 					>
 						<MdLogout size={18} />
-						Logout
+						Sair
 					</div>
 				</div>
 			)}
