@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 
-import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
 
 import { ModalContext } from "@/contexts/modalContext";
@@ -23,7 +22,6 @@ const RegisterModal = () => {
 	const { useLoginModal, useRegisterModal } = useContext(ModalContext);
 
 	const [loading, setLoading] = useState(false);
-	const router = useRouter();
 
 	const loginModal = useLoginModal();
 	const registerModal = useRegisterModal();

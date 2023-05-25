@@ -13,9 +13,9 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
 	return (
 		<div
 			onClick={() => router.push(`/restaurant/${restaurant.id}`)}
-			className="col-span-1 cursor-pointer group"
+			className="col-span-1 cursor-pointer group text-ellipsis"
 		>
-			<div className="flex flex-col gap-2 w-full">
+			<div className="flex flex-col gap-2 w-full overflow-hidden">
 				<div
 					className="
                         aspect-square
@@ -37,8 +37,8 @@ const RestaurantCard = ({ restaurant }: RestaurantCardProps) => {
                         "
 					/>
 				</div>
-				<span>{restaurant.category.name}</span>
-				<h3>{restaurant.name}</h3>
+				<span className="text-gray-600 font-medium">{restaurant.category.name}</span>
+				<h3 className="text-xl w-full font-semibold">{restaurant.name}</h3>
 			</div>
 		</div>
 	);

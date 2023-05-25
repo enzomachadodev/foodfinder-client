@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,19 +18,22 @@ import ImageUpload from "../inputs/ImageUpload";
 import CategorySelect from "../inputs/CategorySelect";
 import { Category } from "@/interfaces";
 import OpeningInput from "../inputs/OpeningInput";
-import axios from "axios";
+import { useParams } from "next/navigation";
+import getRestaurantById from "@/actions/getRestaurantById";
 import formatFormData from "@/utils/formatFormData";
+import setFormData from "@/utils/setFormRestaurants";
 
 interface AddRestaurantProps {
 	categories: Category[];
 }
 
-const AddRestaurant = ({ categories }: AddRestaurantProps) => {
-	const { useRestaurantModal } = useContext(ModalContext);
+const EditRestaurant = ({ categories }: AddRestaurantProps) => {
+	const { useRestaurantModal, currentRestaurant, setCurrentRestaurant } =
+		useContext(ModalContext);
 
 	const [loading, setLoading] = useState(false);
 
-	const createModal = useRestaurantModal("create");
+	const editRestaurantModal = useRestaurantModal("update");
 
 	const {
 		reset,
@@ -43,24 +46,32 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 		resolver: zodResolver(createRestaurantFormSchema),
 	});
 
-	const createRestaurant = async (data: RestaurantFormData) => {
+	useEffect(() => {
+		if (currentRestaurant) {
+			setFormData(currentRestaurant, setValue);
+		}
+	}, [currentRestaurant]);
+
+	const updateRestaurant = async (data: RestaurantFormData) => {
 		const newData = formatFormData(data);
+		console.log(newData);
 
 		setLoading(true);
 		toast.loading("Realizando cadastro...");
 		await api
-			.post("/restaurant", newData)
+			.patch(`/restaurant/${currentRestaurant?.id}`, newData)
 			.then((res) => {
 				setLoading(false);
 				toast.dismiss();
 				toast.success("Sucesso");
 
 				reset();
-				createModal.onClose();
+				editRestaurantModal.onClose();
 			})
 			.catch((err) => {
 				toast.dismiss();
 				console.log(err);
+				toast.error("Ops! Algo deu errado");
 				if (err instanceof AxiosError) {
 					toast.error(err.response?.data.message);
 				}
@@ -69,11 +80,11 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 
 	return (
 		<ModalContainer
-			isOpen={createModal.isOpen}
-			onClose={createModal.onClose}
+			isOpen={editRestaurantModal.isOpen}
+			onClose={editRestaurantModal.onClose}
 			title="Adicione seu Estabelecimento"
 		>
-			<form className="space-y-6" onSubmit={handleSubmit(createRestaurant)}>
+			<form className="space-y-6" onSubmit={handleSubmit(updateRestaurant)}>
 				<DefaultInput
 					id="name"
 					label="Nome"
@@ -216,4 +227,4 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 	);
 };
 
-export default AddRestaurant;
+export default EditRestaurant;

@@ -1,15 +1,14 @@
 "use client";
 
 import Container from "@/components/Container";
-import RestaurantHead from "@/components/RestaurantHead";
-import RestaurantLocation from "@/components/RestaurantLocation";
-import RestaurantOpening from "@/components/RestaurantOpening";
+import RestaurantHead from "@/components/restaurants/RestaurantHead";
+import RestaurantLocation from "@/components/restaurants/RestaurantLocation";
+import RestaurantOpening from "@/components/restaurants/RestaurantOpening";
 import { RestaurantComplete, User } from "@/interfaces";
 
 interface RestaurantClientProps {
 	restaurant: RestaurantComplete;
 	currentUser: User | null;
-	//comentarios
 }
 
 const RestaurantClient = ({ restaurant, currentUser }: RestaurantClientProps) => {
