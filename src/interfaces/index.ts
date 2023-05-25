@@ -17,7 +17,6 @@ export interface Restaurant {
 	id: string;
 	name: string;
 	image: string;
-	rating: number;
 	userId: string;
 	createdAt: Date;
 	updatedAt: Date;
@@ -30,7 +29,6 @@ export interface Address {
 	city: string;
 	state: string;
 	street: string;
-	district: string;
 	number: number;
 	complement?: string;
 }
