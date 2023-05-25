@@ -1,47 +1,49 @@
 "use client";
+import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+import { Category } from "@/interfaces";
 
-interface DefaulInputProps {
+interface CategorySelectProps {
+	categories: Category[];
 	id: string;
 	label: string;
-	type?: string;
-	disabled?: boolean;
-	required?: boolean;
 	register: any;
 	error: boolean;
 	errorMessage?: string;
-	readOnly?: boolean;
-	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
-const DefaultInput = ({
+
+const CategorySelect = ({
+	categories,
 	id,
 	label,
-	type = "text",
-	disabled,
-	required,
 	register,
 	error,
 	errorMessage,
-	readOnly,
-	onChange,
-}: DefaulInputProps) => {
+}: CategorySelectProps) => {
+	const options = categories.map((c: Category) => ({ value: c.id, label: c.name }));
 	return (
-		<div
-			className="
-                flex
-                flex-col
+		<div>
+			<label>{label}</label>
+			<div
+				className="
+                relative
+        "
+			>
+				<span
+					className="
+                    absolute
+                    right-4
+                    top-1/2
+                    -translate-y-1/2
+                    text-2xl
             "
-		>
-			<label className="">{label}</label>
-
-			<input
-				id={id}
-				onChange={onChange}
-				readOnly={readOnly}
-				disabled={disabled}
-				required={required}
-				type={type}
-				{...register(id)}
-				className={`
+				>
+					<MdOutlineKeyboardArrowDown />
+				</span>
+				<select
+					id={id}
+					{...register(id)}
+					defaultValue={""}
+					className={`
                 block
                 w-full 
                 rounded-lg 
@@ -63,12 +65,21 @@ const DefaultInput = ({
                 transition
                 disabled:opacity-70
                 disabled:cursor-not-allowed
-                pl-4
-				appearance-none
+                px-4
+                bg-white
+                appearance-none
                 ${error && " ring-rose-500"}
                 ${error && "focus:ring-rose-500"}
                 `}
-			/>
+				>
+					<option value="">Selecione</option>
+					{options.map((o) => (
+						<option key={o.value} value={o.value}>
+							{o.label}
+						</option>
+					))}
+				</select>
+			</div>
 			<p
 				className="
                 text-rose-500
@@ -81,4 +92,4 @@ const DefaultInput = ({
 	);
 };
 
-export default DefaultInput;
+export default CategorySelect;
