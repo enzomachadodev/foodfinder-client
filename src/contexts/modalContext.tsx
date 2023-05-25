@@ -1,3 +1,4 @@
+import { RestaurantComplete } from "@/interfaces";
 import { createContext, useState } from "react";
 
 interface IModalContextData {
@@ -11,6 +12,13 @@ interface IModalContextData {
 		onOpen: () => void;
 		onClose: () => void;
 	};
+	useRestaurantModal: (type: "create" | "update") => {
+		isOpen: boolean;
+		onOpen: () => void;
+		onClose: () => void;
+	};
+	currentRestaurant: RestaurantComplete | null;
+	setCurrentRestaurant: React.Dispatch<React.SetStateAction<RestaurantComplete | null>>;
 }
 
 interface IModalProviderProps {
@@ -22,6 +30,10 @@ export const ModalContext = createContext({} as IModalContextData);
 export const ModalProvider = ({ children }: IModalProviderProps) => {
 	const [login, setLogin] = useState(false);
 	const [register, setRegister] = useState(false);
+	const [addRestaurant, setAddRestaurant] = useState(false);
+	const [editRestaurant, setEditRestaurant] = useState(false);
+	const [currentRestaurant, setCurrentRestaurant] = useState<RestaurantComplete | null>(null);
+	const [deleteModal, setDeleteModal] = useState(false);
 
 	const useLoginModal = () => {
 		return {
@@ -39,8 +51,32 @@ export const ModalProvider = ({ children }: IModalProviderProps) => {
 		};
 	};
 
+	const useRestaurantModal = (type: "create" | "update") => {
+		if (type === "create") {
+			return {
+				isOpen: addRestaurant,
+				onOpen: () => setAddRestaurant(true),
+				onClose: () => setAddRestaurant(false),
+			};
+		}
+
+		return {
+			isOpen: editRestaurant,
+			onOpen: () => setEditRestaurant(true),
+			onClose: () => setEditRestaurant(false),
+		};
+	};
+
 	return (
-		<ModalContext.Provider value={{ useLoginModal, useRegisterModal }}>
+		<ModalContext.Provider
+			value={{
+				currentRestaurant,
+				setCurrentRestaurant,
+				useRestaurantModal,
+				useLoginModal,
+				useRegisterModal,
+			}}
+		>
 			{children}
 		</ModalContext.Provider>
 	);
