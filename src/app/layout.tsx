@@ -11,6 +11,8 @@ import getCurrentUser from "@/actions/getCurrentUser";
 import AddRestaurant from "@/components/modals/AddRestaurant";
 import getCategories from "@/actions/getCategories";
 import EditRestaurant from "@/components/modals/EditRestaurant";
+import DeleteRestaurant from "@/components/modals/DeleteRestaurant";
+import CheckDateModal from "@/components/modals/CheckDateModal";
 
 export const metadata = {
 	title: "Food Finder",
@@ -44,6 +46,8 @@ const RootLayout = async ({ children }: RootLayoutProps) => {
 					<RegisterModal />
 					<AddRestaurant categories={categories} />
 					<EditRestaurant categories={categories} />
+					<DeleteRestaurant />
+					<CheckDateModal />
 					<main className="w-full h-full pt-[82px]">{children}</main>
 				</body>
 			</Providers>
