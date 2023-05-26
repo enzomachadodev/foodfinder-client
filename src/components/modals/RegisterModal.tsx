@@ -1,20 +1,20 @@
 "use client";
 
-import { z } from "zod";
+import { useContext, useState } from "react";
+
 import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
 import { toast } from "react-hot-toast";
 
-import { useContext, useState } from "react";
-
 import { ModalContext } from "@/contexts/modalContext";
+import { RegisterUserFormSchema } from "@/schemas/user";
 
 import api from "@/services/api";
 import ModalContainer from "./ModalContainer";
 import DefaultInput from "../inputs/DefaultInput";
 import SolidButton from "../buttons/SolidButton";
-import { RegisterUserFormSchema } from "@/schemas/user";
 
 type RegisterUserFormData = z.infer<typeof RegisterUserFormSchema>;
 
@@ -56,6 +56,7 @@ const RegisterModal = () => {
 			.catch((err) => {
 				toast.dismiss();
 				console.log(err);
+				setLoading(false);
 				if (err instanceof AxiosError) {
 					toast.error(err.response?.data.message);
 				}
