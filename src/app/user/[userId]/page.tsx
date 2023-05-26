@@ -1,7 +1,19 @@
-import React from "react";
+import getRestaurantsByUser from "@/actions/getRestaurantsByUser";
+import EmptyState from "@/components/EmptyState";
+import UserRestaurantsClient from "./UserRestaurantsClient";
 
-const UserRestaurants = () => {
-	return <div>UserRestaurants</div>;
+interface IParams {
+	userId?: string;
+}
+
+const UserRestaurantsPage = async ({ params }: { params: IParams }) => {
+	const restaurants = await getRestaurantsByUser(params);
+
+	if (!restaurants) {
+		return <EmptyState />;
+	}
+
+	return <UserRestaurantsClient restaurants={restaurants} />;
 };
 
-export default UserRestaurants;
+export default UserRestaurantsPage;
