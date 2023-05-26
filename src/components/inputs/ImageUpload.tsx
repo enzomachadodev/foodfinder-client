@@ -1,7 +1,6 @@
 "use client";
 
 import { CldUploadWidget } from "next-cloudinary";
-import { useCallback, useEffect, useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 
 declare global {
@@ -31,17 +30,9 @@ const ImageUpload = ({
 	error,
 	errorMessage,
 	setValue,
-	setFocus,
 }: ImageUploadProps) => {
-	const [image, setImage] = useState("");
-
-	useEffect(() => {
-		setValue(id, image);
-		setFocus(id);
-	}, [image]);
-
 	const handleUpload = (result: any) => {
-		setImage(result.info.secure_url);
+		setValue(id, result.info.secure_url);
 	};
 
 	return (
@@ -54,12 +45,7 @@ const ImageUpload = ({
 		>
 			{({ open }) => {
 				return (
-					<div
-						className="
-                            flex
-                            flex-col
-                        "
-					>
+					<div className="flex flex-col">
 						<label className="">{label}</label>
 						<div
 							className="
@@ -123,14 +109,7 @@ const ImageUpload = ({
 								<AiOutlineCloudUpload size={28} />
 							</button>
 						</div>
-						<p
-							className="
-                                text-rose-500
-                                text-sm
-                                "
-						>
-							{errorMessage}
-						</p>
+						<p className="text-rose-500 text-sm">{errorMessage}</p>
 					</div>
 				);
 			}}

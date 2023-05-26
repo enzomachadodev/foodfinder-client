@@ -25,12 +25,7 @@ const DefaultInput = ({
 	onChange,
 }: DefaulInputProps) => {
 	return (
-		<div
-			className="
-                flex
-                flex-col
-            "
-		>
+		<div className="flex flex-col">
 			<label className="">{label}</label>
 
 			<input
