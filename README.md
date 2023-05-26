@@ -1,34 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Full Stack Restaurant CRUD (Front-End): Next.js, Tailwind CSS, React-Hook-Form, Zod, Cloudinary.
 
-## Getting Started
+<hr />
 
-First, run the development server:
+## 📃Conteúdos da Página:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+-   [Sobre](#Sobre)
+-   [Utilização](#Utilização)
+-   [Instalação](#Instalação)
+-   [Desenvolvedor](#Desenvolvido-por)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📜Sobre
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Este repositório é o resultado do desenvolvimento do Front-End de um desafio full stack, com foco em criar um sistema de cadastro de restaurantes e horários de funcionamento. Utilizei tecnologias modernas, como Next.js, Tailwind CSS, React-Hook-Form, Zod e Cloudinary, para construir uma interface funcional e responsiva.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Para alcançar esse objetivo, utilizei um conjunto de tecnologias poderosas e eficientes. O framework Next.js foi escolhido como base do desenvolvimento, permitindo uma renderização rápida e otimizada, além de suporte a recursos avançados, como renderização no lado do servidor e geração de estática.
 
-## Learn More
+Além das funcionalidades já implementadas, em breve irei adicionar mais recursos à aplicação. Como, implementação de paginação para facilitar a navegação, a criação de filtragem avançada para encontrar restaurantes específicos, dashboard do usuário para proporcionar uma visão personalizada, entre outras.
 
-To learn more about Next.js, take a look at the following resources:
+Para acessar o repositório do Back-End [Clique aqui](https://github.com/m4chado/foodfinder-api)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 👩🏻‍💻Ultilização
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Você pode conferir o projeto finalizado aqui:
 
-## Deploy on Vercel
+[https://foodfinder-client.vercel.app/](https://foodfinder-client.vercel.app/)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 💾Instalação
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Pré-requisitos:
+
+- Node.js instalado (versão 14 ou superior)
+
+### Passo 1: Configurando o ambiente de desenvolvimento
+
+1. Clone o repositório do projeto em seu ambiente local:
+
+```git clone https://github.com/m4chado/foodfinder-client.git```
+
+2. Acesse a pasta do projeto:   
+
+```cd foodfinder-client```
+
+3. Instale as dependências do projeto:
+
+```npm install```
+
+### Passo 2: Configure as variáveis de ambiente
+
+1. Crie um arquivo .env na raiz do projeto e adicione as variáveis de ambiente de arcordo com o arquivo `.env.example`.
+
+### Passo 3: Executando o projeto: 
+
+1. Inicie o servidor localmente:
+
+```npm run dev```
+
+2. Verifique se o servidor está funcionando acessando http://localhost:3000 no seu navegador.
+
+3. Pronto! Agora você deve visualizar a minha aplicação Front-End em execução no seu navegador.
+
+## Desenvolvido por:
+
+-   Enzo Machado [![github](https://img.shields.io/badge/github-6e5494?style=for-the-badge&logo=github&logoColor=white)](https://github.com/m4chado) [![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/enzomachadodev/)
