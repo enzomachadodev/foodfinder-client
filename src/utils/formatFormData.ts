@@ -1,6 +1,6 @@
 import { RestaurantFormData } from "@/schemas/restaurant";
 
-const formatFormData = ({
+export const formatCreateFormData = ({
 	name,
 	image,
 	categoryId,
@@ -44,4 +44,44 @@ const formatFormData = ({
 	};
 };
 
-export default formatFormData;
+export const formatUpdateFormData = ({
+	name,
+	image,
+	categoryId,
+	zipCode,
+	city,
+	street,
+	state,
+	complement,
+	number,
+	sunday,
+	monday,
+	tuesday,
+	wednesday,
+	thursday,
+	friday,
+	saturday,
+}: RestaurantFormData) => {
+	return {
+		name,
+		image,
+		categoryId,
+		address: {
+			zipCode,
+			street,
+			city,
+			state,
+			number,
+			complement,
+		},
+		opening: {
+			sunday,
+			monday,
+			tuesday,
+			wednesday,
+			thursday,
+			friday,
+			saturday,
+		},
+	};
+};

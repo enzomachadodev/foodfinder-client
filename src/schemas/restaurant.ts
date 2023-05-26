@@ -6,16 +6,10 @@ export const createRestaurantFormSchema = z.object({
 	image: z.string().optional(),
 	zipCode: z
 		.string()
-		.nonempty("CEP é obrigatóriio")
+		.nonempty("CEP é obrigatório")
+		.regex(/^[0-9]+$/, "Digite apenas números")
 		.max(8, "Digite um CEP válido")
-		.min(8, "Digite um CEP válido")
-		.transform((value) => {
-			const parsedValue = parseInt(value, 10);
-			if (isNaN(parsedValue)) {
-				throw new Error("O valor precisa ser um número inteiro");
-			}
-			return parsedValue.toString();
-		}),
+		.min(8, "Digite um CEP válido"),
 	city: z.string().nonempty("Cidade é obrigatóriio"),
 	state: z
 		.string()
@@ -23,13 +17,14 @@ export const createRestaurantFormSchema = z.object({
 		.max(2, "Insira a sigla do estado")
 		.nonempty("Estado é obrigatóriio"),
 	street: z.string().nonempty("Rua é obrigatório"),
-	number: z.string().transform((value) => {
-		const parsedValue = parseInt(value, 10);
-		if (isNaN(parsedValue)) {
-			throw new Error("O valor precisa ser um número inteiro");
-		}
-		return parsedValue;
-	}),
+	number: z
+		.string()
+		.nonempty("Número é obrigatório")
+		.regex(/^[0-9]+$/, "Digite apenas números")
+		.transform((value) => {
+			const parsedValue = parseInt(value, 10);
+			return parsedValue;
+		}),
 	complement: z.string().optional(),
 
 	sunday: z

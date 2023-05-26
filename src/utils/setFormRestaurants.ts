@@ -1,6 +1,5 @@
 import { RestaurantComplete } from "@/interfaces";
 import { UseFormSetValue } from "react-hook-form";
-import { number } from "zod";
 
 const setFormData = (
 	restaurantData: RestaurantComplete,
@@ -26,13 +25,12 @@ const setFormData = (
 	setValue("name", restaurantData.name);
 	setValue("categoryId", restaurantData.category.id);
 	setValue("image", restaurantData.image);
-	// setValue("name", restaurantData.name);
-	// setValue("name", restaurantData.name);
-	// setValue("name", restaurantData.name);
-	// setValue("name", restaurantData.name);
-	// setValue("name", restaurantData.name);
-	// setValue("name", restaurantData.name);
-	// setValue("name", restaurantData.name);
+
+	setValue("zipCode", restaurantData.address.zipCode);
+	setValue("city", restaurantData.address.city);
+	setValue("state", restaurantData.address.state);
+	setValue("street", restaurantData.address.street);
+	setValue("number", restaurantData.address.number);
 };
 
 export default setFormData;
