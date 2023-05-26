@@ -10,7 +10,7 @@ import { CiLogout } from "react-icons/ci";
 import { MdAddBusiness, MdFoodBank, MdLogout } from "react-icons/md";
 import { destroyCookie, parseCookies } from "nookies";
 import { useRouter } from "next/navigation";
-import logoutUser from "@/actions/logoutUser";
+//import logoutUser from "@/actions/logoutUser";
 
 interface UserBoxProps {
 	currentUser: User | null;
@@ -21,15 +21,19 @@ const UserMenu = ({ currentUser }: UserBoxProps) => {
 	const [openMenu, setOpenMenu] = useState(false);
 
 	const router = useRouter();
-
 	const loginModal = useLoginModal();
 	const registerModal = useRegisterModal();
 	const addRestaurantModal = useRestaurantModal("create");
 
-	const handleLogout = () => {
-		console.log("passou aqui");
-		logoutUser();
+	const logoutUser = () => {
+		destroyCookie(null, "foodfinder.token");
+		const { "foodfinder.token": token } = parseCookies();
 		router.refresh();
+	};
+
+	const handleLogout = () => {
+		logoutUser();
+		setOpenMenu(false);
 	};
 
 	const handleAddRestaurant = () => {
@@ -37,7 +41,10 @@ const UserMenu = ({ currentUser }: UserBoxProps) => {
 		setOpenMenu(false);
 	};
 
-	const handleMyRestaurants = () => {};
+	const handleMyRestaurants = () => {
+		router.push(`/user/${currentUser?.id}`);
+		setOpenMenu(false);
+	};
 
 	if (!currentUser) {
 		return (
@@ -101,7 +108,7 @@ const UserMenu = ({ currentUser }: UserBoxProps) => {
 					"
 					>
 						<MdFoodBank size={18} />
-						Meus estabelecimentos
+						Meu perfil
 					</div>
 					<div
 						onClick={handleLogout}
