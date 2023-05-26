@@ -1,12 +1,17 @@
 import { Opening, OpeningHours } from "@/interfaces";
-import React from "react";
-import checkOpeningHours from "@/actions/checkOpeningHours";
+import React, { useContext } from "react";
+import { checkOpeningHours } from "@/utils/checkOpeningHours";
+import SolidButton from "../buttons/SolidButton";
+import { ModalContext } from "@/contexts/modalContext";
 
 interface RestaurantOpeningProps {
 	opening: Opening;
 }
 
 const RestaurantOpening = ({ opening }: RestaurantOpeningProps) => {
+	const { useCheckDate } = useContext(ModalContext);
+	const checkDateModal = useCheckDate();
+
 	const openingHours: OpeningHours = {
 		...opening,
 	};
@@ -18,24 +23,56 @@ const RestaurantOpening = ({ opening }: RestaurantOpeningProps) => {
 			className="
             order-first 
             mb-10 
-            md:order-last 
             md:col-span-1
             "
 		>
 			<div>
-				<span>{isOpen.status}</span>
-				<p>{isOpen.nextOpen}</p>
+				<SolidButton
+					onClick={checkDateModal.onOpen}
+					type="button"
+					label="Conferir Horário"
+				/>
+				<div className="text-lg font-medium my-4">
+					Status:{" "}
+					<span
+						className={`p-1 rounded-lg text-base font-normal text-gray-800 ${
+							isOpen.status === "Fechado" ? "bg-red-500/70" : "bg-green-500/70"
+						}`}
+					>
+						{isOpen.status}
+					</span>
+				</div>
 			</div>
-			<div>
-				<h3>Horarios de Funcionamento:</h3>
-				<ul>
-					<li>Domingo: {opening.sunday}</li>
-					<li>Segunda-feira: {opening.monday}</li>
-					<li>Terça-feira: {opening.tuesday}</li>
-					<li>Quarta-feira: {opening.wednesday}</li>
-					<li>Quinta-feira: {opening.thursday}</li>
-					<li>Sexta-feira: {opening.friday}</li>
-					<li>Sabado: {opening.saturday}</li>
+			<div className="w-full">
+				<h3 className="text-lg font-medium mb-2">Horarios de Funcionamento:</h3>
+				<ul className="flex flex-col gap-2">
+					<li className="flex gap-2 w-full items-center justify-between px-4">
+						Domingo: <span>{opening.sunday}</span>
+					</li>
+					<hr />
+					<li className="flex gap-2 w-full items-center justify-between px-4">
+						Segunda-feira: <span>{opening.monday}</span>
+					</li>
+					<hr />
+					<li className="flex gap-2 w-full items-center justify-between px-4">
+						Terça-feira: <span>{opening.tuesday}</span>
+					</li>
+					<hr />
+					<li className="flex gap-2 w-full items-center justify-between px-4">
+						Quarta-feira: <span>{opening.wednesday}</span>
+					</li>
+					<hr />
+					<li className="flex gap-2 w-full items-center justify-between px-4">
+						Quinta-feira: <span>{opening.thursday}</span>
+					</li>
+					<hr />
+					<li className="flex gap-2 w-full items-center justify-between px-4">
+						Sexta-feira: <span>{opening.friday}</span>
+					</li>
+					<hr />
+					<li className="flex gap-2 w-full items-center justify-between px-4">
+						Sabado: <span>{opening.saturday}</span>
+					</li>
 				</ul>
 			</div>
 		</div>
