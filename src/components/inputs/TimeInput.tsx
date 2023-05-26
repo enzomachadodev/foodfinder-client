@@ -31,11 +31,21 @@ const minutesOptions = ["05", "10", "15", "20", "25", "30", "35", "40", "45", "5
 interface TimeInputProps {
 	disabled: boolean;
 	onChange: (value: string) => void;
+	defaultTime?: string;
+	className?: string;
 }
 
-const TimeInput = ({ disabled, onChange }: TimeInputProps) => {
+const TimeInput = ({ disabled, onChange, defaultTime, className = "" }: TimeInputProps) => {
 	const [hours, setHours] = useState("00");
 	const [minutes, setMinutes] = useState("00");
+
+	useEffect(() => {
+		if (defaultTime) {
+			const [h, m] = defaultTime.split(":");
+			setHours(h);
+			setMinutes(m);
+		}
+	}, [defaultTime]);
 
 	useEffect(() => {
 		let time = `${hours}:${minutes}`;
@@ -57,6 +67,7 @@ const TimeInput = ({ disabled, onChange }: TimeInputProps) => {
                     block
                     rounded-lg 
                     border-0 
+					w-fit
                     py-3
                     mt-2
                     mb-1
@@ -74,18 +85,22 @@ const TimeInput = ({ disabled, onChange }: TimeInputProps) => {
                     ${disabled && "opacity-40"}
                     ${disabled && "cursor-not-allowed"}
                     px-4
+					text-sm
+					md:text-base
+					${className}
             `}
 		>
 			<select
 				disabled={disabled}
 				onChange={handleChangeHours}
-				defaultValue={"00"}
+				value={hours}
 				className="
                     focus:ring-2 
                     focus:ring-inset 
-                    focus:ring-indigo-600
+                    focus:ring-indigo-500
                     outline-none
                     transition
+					duration-200
                     disabled:opacity-30
                     disabled:cursor-not-allowed
                     appearance-none
@@ -103,7 +118,7 @@ const TimeInput = ({ disabled, onChange }: TimeInputProps) => {
 			<select
 				disabled={disabled}
 				onChange={handleChangeMinutes}
-				defaultValue={"00"}
+				value={minutes}
 				className="
                     focus:ring-2 
                     focus:ring-inset 
