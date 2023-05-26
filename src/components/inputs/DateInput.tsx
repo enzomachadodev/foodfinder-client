@@ -2,11 +2,11 @@
 
 import DatePicker from "react-datepicker";
 import { registerLocale } from "react-datepicker";
-import pt from "date-fns/locale/pt";
+//import pt from "date-fns/locale/pt";
 
 import "react-datepicker/dist/react-datepicker.css";
 
-registerLocale("pt", pt);
+//registerLocale("pt", pt);
 
 interface InputDateProps {
 	date: Date | null;
@@ -16,7 +16,7 @@ interface InputDateProps {
 const DateInput = ({ date, onChange }: InputDateProps) => {
 	return (
 		<DatePicker
-			locale="pt"
+			//locale="pt"
 			dateFormat={"dd/MM/yyyy"}
 			className="
                 block
