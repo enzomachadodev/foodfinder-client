@@ -1,21 +1,22 @@
 "use client";
 
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { useRouter } from "next/navigation";
 import { useContext, useState } from "react";
+import { useRouter } from "next/navigation";
 
-import { ModalContext } from "@/contexts/modalContext";
-import ModalContainer from "./ModalContainer";
-import DefaultInput from "../inputs/DefaultInput";
-import SolidButton from "../buttons/SolidButton";
-import api from "@/services/api";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "react-hot-toast";
 import { AxiosError } from "axios";
 import { setCookie } from "nookies";
+
+import { ModalContext } from "@/contexts/modalContext";
 import { loginUserFormSchema } from "@/schemas/user";
+
+import api from "@/services/api";
+import ModalContainer from "./ModalContainer";
+import DefaultInput from "../inputs/DefaultInput";
+import SolidButton from "../buttons/SolidButton";
 
 type LoginUserFormData = z.infer<typeof loginUserFormSchema>;
 
@@ -47,7 +48,6 @@ const LoginModal = () => {
 		await api
 			.post("/session", data)
 			.then((res) => {
-				setLoading(false);
 				toast.dismiss();
 				toast.success("Bem vindo");
 
@@ -67,6 +67,7 @@ const LoginModal = () => {
 			})
 			.catch((err) => {
 				toast.dismiss();
+				setLoading(false);
 				console.log(err);
 				if (err instanceof AxiosError) {
 					toast.error(err.response?.data.message);

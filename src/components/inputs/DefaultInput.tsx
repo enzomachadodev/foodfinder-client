@@ -9,6 +9,8 @@ interface DefaulInputProps {
 	register: any;
 	error: boolean;
 	errorMessage?: string;
+	readOnly?: boolean;
+	onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const DefaultInput = ({
 	id,
@@ -19,18 +21,17 @@ const DefaultInput = ({
 	register,
 	error,
 	errorMessage,
+	readOnly,
+	onChange,
 }: DefaulInputProps) => {
 	return (
-		<div
-			className="
-                flex
-                flex-col
-            "
-		>
+		<div className="flex flex-col">
 			<label className="">{label}</label>
 
 			<input
 				id={id}
+				onChange={onChange}
+				readOnly={readOnly}
 				disabled={disabled}
 				required={required}
 				type={type}
@@ -58,6 +59,7 @@ const DefaultInput = ({
                 disabled:opacity-70
                 disabled:cursor-not-allowed
                 pl-4
+				appearance-none
                 ${error && " ring-rose-500"}
                 ${error && "focus:ring-rose-500"}
                 `}

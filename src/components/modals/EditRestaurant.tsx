@@ -1,5 +1,5 @@
 "use client";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
@@ -10,27 +10,31 @@ import { AxiosError } from "axios";
 import { ModalContext } from "@/contexts/modalContext";
 import { RestaurantFormData, createRestaurantFormSchema } from "@/schemas/restaurant";
 import { Category } from "@/interfaces";
-import { formatCreateFormData } from "@/utils/formatFormData";
+
+import { formatUpdateFormData } from "@/utils/formatFormData";
+import setFormData from "@/utils/setFormRestaurants";
 
 import api from "@/services/api";
 import ModalContainer from "./ModalContainer";
 import DefaultInput from "../inputs/DefaultInput";
-import SolidButton from "../buttons/SolidButton";
 import ImageUpload from "../inputs/ImageUpload";
 import CategorySelect from "../inputs/CategorySelect";
 import OpeningInput from "../inputs/OpeningInput";
+import SolidButton from "../buttons/SolidButton";
+import OutlineButton from "../buttons/OutlineButton";
 
 interface AddRestaurantProps {
 	categories: Category[];
 }
 
-const AddRestaurant = ({ categories }: AddRestaurantProps) => {
-	const { useRestaurantModal } = useContext(ModalContext);
+const EditRestaurant = ({ categories }: AddRestaurantProps) => {
+	const { useRestaurantModal, currentRestaurant, setCurrentRestaurant } =
+		useContext(ModalContext);
 	const router = useRouter();
 
 	const [loading, setLoading] = useState(false);
 
-	const createRestaurantModal = useRestaurantModal("create");
+	const editRestaurantModal = useRestaurantModal("update");
 
 	const {
 		reset,
@@ -43,26 +47,36 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 		resolver: zodResolver(createRestaurantFormSchema),
 	});
 
-	const createRestaurant = async (data: RestaurantFormData) => {
-		const newData = formatCreateFormData(data);
+	useEffect(() => {
+		if (currentRestaurant) {
+			setFormData(currentRestaurant, setValue);
+		}
+	}, [currentRestaurant, editRestaurantModal.isOpen]);
+
+	const handleClose = () => {
+		editRestaurantModal.onClose();
+	};
+
+	const updateRestaurant = async (data: RestaurantFormData) => {
+		const newData = formatUpdateFormData(data);
 
 		setLoading(true);
-		toast.loading("Realizando cadastro...");
+		toast.loading("Salvando informações...");
 		await api
-			.post("/restaurant", newData)
+			.patch(`/restaurant/${currentRestaurant?.id}`, newData)
 			.then((res) => {
 				setLoading(false);
 				toast.dismiss();
 				toast.success("Sucesso");
 
-				reset();
+				editRestaurantModal.onClose();
 				router.refresh();
-				createRestaurantModal.onClose();
 			})
 			.catch((err) => {
 				toast.dismiss();
 				setLoading(false);
 				console.log(err);
+				toast.error("Ops! Algo deu errado");
 				if (err instanceof AxiosError) {
 					toast.error(err.response?.data.message);
 				}
@@ -71,11 +85,11 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 
 	return (
 		<ModalContainer
-			isOpen={createRestaurantModal.isOpen}
-			onClose={createRestaurantModal.onClose}
-			title="Adicione seu Estabelecimento"
+			isOpen={editRestaurantModal.isOpen}
+			onClose={editRestaurantModal.onClose}
+			title="Editar informações"
 		>
-			<form className="space-y-6" onSubmit={handleSubmit(createRestaurant)}>
+			<form className="space-y-6" onSubmit={handleSubmit(updateRestaurant)}>
 				<DefaultInput
 					id="name"
 					label="Nome"
@@ -105,6 +119,7 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 				<OpeningInput
 					id="sunday"
 					day="Domingo"
+					defaultValue={currentRestaurant?.opening.sunday}
 					setValue={setValue}
 					register={register}
 					error={!!errors.sunday}
@@ -112,6 +127,7 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 				<OpeningInput
 					id="monday"
 					day="Segunda-Feira"
+					defaultValue={currentRestaurant?.opening.monday}
 					setValue={setValue}
 					register={register}
 					error={!!errors.monday}
@@ -119,6 +135,7 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 				<OpeningInput
 					id="tuesday"
 					day="Terça-Feira"
+					defaultValue={currentRestaurant?.opening.tuesday}
 					setValue={setValue}
 					register={register}
 					error={!!errors.tuesday}
@@ -126,6 +143,7 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 				<OpeningInput
 					id="wednesday"
 					day="Quarta-Feira"
+					defaultValue={currentRestaurant?.opening.thursday}
 					setValue={setValue}
 					register={register}
 					error={!!errors.wednesday}
@@ -133,6 +151,7 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 				<OpeningInput
 					id="thursday"
 					day="Quinta-Feira"
+					defaultValue={currentRestaurant?.opening.wednesday}
 					setValue={setValue}
 					register={register}
 					error={!!errors.thursday}
@@ -140,6 +159,7 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 				<OpeningInput
 					id="friday"
 					day="Sexta-Feira"
+					defaultValue={currentRestaurant?.opening.friday}
 					setValue={setValue}
 					register={register}
 					error={!!errors.friday}
@@ -147,6 +167,7 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 				<OpeningInput
 					id="saturday"
 					day="Sábado"
+					defaultValue={currentRestaurant?.opening.saturday}
 					setValue={setValue}
 					register={register}
 					error={!!errors.saturday}
@@ -155,7 +176,6 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 				<h3 className="text-xl font-bold">Localização</h3>
 				<DefaultInput
 					id="zipCode"
-					type="text"
 					label="CEP"
 					register={register}
 					error={!!errors.zipCode}
@@ -185,16 +205,17 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 				<DefaultInput
 					id="number"
 					label="Número"
-					type="text"
 					register={register}
 					error={!!errors.number}
 					errorMessage={errors.number && errors.number.message}
 				/>
-
-				<SolidButton disabled={loading} label="Registrar" type="submit" />
+				<div className="flex gap-4">
+					<OutlineButton onClick={handleClose} label="Cancelar" type="button" />
+					<SolidButton disabled={loading} label="Salvar" type="submit" />
+				</div>
 			</form>
 		</ModalContainer>
 	);
 };
 
-export default AddRestaurant;
+export default EditRestaurant;

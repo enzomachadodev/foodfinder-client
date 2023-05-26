@@ -2,11 +2,10 @@
 
 interface AvatarProps {
 	image: string;
-	logout: () => void;
 	onClick: () => void;
 }
 
-const Avatar = ({ image, logout, onClick }: AvatarProps) => {
+const Avatar = ({ image, onClick }: AvatarProps) => {
 	return (
 		<div
 			onClick={onClick}

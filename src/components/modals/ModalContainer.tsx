@@ -46,6 +46,7 @@ const ModalContainer = ({ isOpen, onClose, title, children }: ModalProps) => {
                     xl:w-2/5
                     mx-auto
                     h-full
+
                     lg:h-auto
                     md:h-auto
                     overflow-hidden
@@ -59,6 +60,7 @@ const ModalContainer = ({ isOpen, onClose, title, children }: ModalProps) => {
                     ${showModal ? "opacity-100" : "opacity-0"}
                     ${showModal ? "translate-y-0" : "translate-y-full"}
                     h-full
+                    max-h-screen
                     w-full
                     md:h-auto
                     lg:h-auto
@@ -84,10 +86,10 @@ const ModalContainer = ({ isOpen, onClose, title, children }: ModalProps) => {
                             right-4
                         "
 					>
-						<IoMdClose size={20} />
+						<IoMdClose size={25} />
 					</button>
 					<div className="mx-auto w-full mb-10">
-						<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+						<h2 className="mt-10 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900">
 							{title}
 						</h2>
 					</div>

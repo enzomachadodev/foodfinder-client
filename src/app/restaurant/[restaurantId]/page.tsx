@@ -8,7 +8,6 @@ interface IParams {
 }
 
 const RestaurantPage = async ({ params }: { params: IParams }) => {
-	//const comentarios
 	const currentUser = await getCurrentUser();
 	const restaurant = await getRestaurantById(params);
 
