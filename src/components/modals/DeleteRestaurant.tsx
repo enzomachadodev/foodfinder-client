@@ -23,7 +23,7 @@ const DeleteRestaurant = () => {
 
 	const deleteRestaurant = async () => {
 		setLoading(true);
-		toast.loading("Realizando cadastro...");
+		toast.loading("Apagando informações...");
 		await api
 			.delete(`/restaurant/${currentRestaurant?.id}`)
 			.then((res) => {
@@ -37,6 +37,7 @@ const DeleteRestaurant = () => {
 			})
 			.catch((err) => {
 				toast.dismiss();
+				setLoading(false);
 				console.log(err);
 				toast.error("Ops! Algo deu errado");
 				if (err instanceof AxiosError) {

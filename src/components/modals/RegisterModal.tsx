@@ -42,16 +42,16 @@ const RegisterModal = () => {
 
 	const signUp = async (data: RegisterUserFormData) => {
 		setLoading(true);
-		toast.loading("Verificando credenciais...");
+		toast.loading("Cadastrando...");
 		await api
 			.post("/user", data)
 			.then((res) => {
 				setLoading(false);
 				toast.dismiss();
-				toast.success("Bem vindo");
+				toast.success("Registrado");
 
 				reset();
-				registerModal.onClose();
+				goToLogin();
 			})
 			.catch((err) => {
 				toast.dismiss();

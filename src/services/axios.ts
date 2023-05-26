@@ -6,7 +6,8 @@ export function getAPIClient(ctx?: any) {
 
 	const api = axios.create({
 		//baseURL: "http://localhost:3333",
-		baseURL: "http://18.228.138.40:3333",
+		//baseURL: "http://18.228.138.40:3333",
+		baseURL: "https://foodfinder-api.onrender.com",
 	});
 
 	api.interceptors.request.use((config) => {
