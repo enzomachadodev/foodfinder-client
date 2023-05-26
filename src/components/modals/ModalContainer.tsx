@@ -86,7 +86,7 @@ const ModalContainer = ({ isOpen, onClose, title, children }: ModalProps) => {
                             right-4
                         "
 					>
-						<IoMdClose size={20} />
+						<IoMdClose size={25} />
 					</button>
 					<div className="mx-auto w-full mb-10">
 						<h2 className="mt-10 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900">

@@ -1,14 +1,16 @@
 "use client";
 import { useContext, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { toast } from "react-hot-toast";
 import { AxiosError } from "axios";
 
 import { ModalContext } from "@/contexts/modalContext";
 import { RestaurantFormData, createRestaurantFormSchema } from "@/schemas/restaurant";
+import { Category } from "@/interfaces";
+import { formatCreateFormData } from "@/utils/formatFormData";
 
 import api from "@/services/api";
 import ModalContainer from "./ModalContainer";
@@ -16,10 +18,7 @@ import DefaultInput from "../inputs/DefaultInput";
 import SolidButton from "../buttons/SolidButton";
 import ImageUpload from "../inputs/ImageUpload";
 import CategorySelect from "../inputs/CategorySelect";
-import { Category } from "@/interfaces";
 import OpeningInput from "../inputs/OpeningInput";
-import axios from "axios";
-import formatFormData from "@/utils/formatFormData";
 
 interface AddRestaurantProps {
 	categories: Category[];
@@ -27,10 +26,11 @@ interface AddRestaurantProps {
 
 const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 	const { useRestaurantModal } = useContext(ModalContext);
+	const router = useRouter();
 
 	const [loading, setLoading] = useState(false);
 
-	const createModal = useRestaurantModal("create");
+	const createRestaurantModal = useRestaurantModal("create");
 
 	const {
 		reset,
@@ -44,7 +44,7 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 	});
 
 	const createRestaurant = async (data: RestaurantFormData) => {
-		const newData = formatFormData(data);
+		const newData = formatCreateFormData(data);
 
 		setLoading(true);
 		toast.loading("Realizando cadastro...");
@@ -56,10 +56,12 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 				toast.success("Sucesso");
 
 				reset();
-				createModal.onClose();
+				router.refresh();
+				createRestaurantModal.onClose();
 			})
 			.catch((err) => {
 				toast.dismiss();
+				setLoading(false);
 				console.log(err);
 				if (err instanceof AxiosError) {
 					toast.error(err.response?.data.message);
@@ -69,8 +71,8 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 
 	return (
 		<ModalContainer
-			isOpen={createModal.isOpen}
-			onClose={createModal.onClose}
+			isOpen={createRestaurantModal.isOpen}
+			onClose={createRestaurantModal.onClose}
 			title="Adicione seu Estabelecimento"
 		>
 			<form className="space-y-6" onSubmit={handleSubmit(createRestaurant)}>
@@ -99,21 +101,13 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 					setFocus={setFocus}
 				/>
 				<hr />
-				<h3
-					className="
-						text-xl
-						font-bold
-				"
-				>
-					Horarios de Funcionamento
-				</h3>
+				<h3 className="text-xl font-bold">Horarios de Funcionamento</h3>
 				<OpeningInput
 					id="sunday"
 					day="Domingo"
 					setValue={setValue}
 					register={register}
 					error={!!errors.sunday}
-					errorMessage={errors.sunday && errors.sunday.message}
 				/>
 				<OpeningInput
 					id="monday"
@@ -121,7 +115,6 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 					setValue={setValue}
 					register={register}
 					error={!!errors.monday}
-					errorMessage={errors.monday && errors.monday.message}
 				/>
 				<OpeningInput
 					id="tuesday"
@@ -129,7 +122,6 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 					setValue={setValue}
 					register={register}
 					error={!!errors.tuesday}
-					errorMessage={errors.tuesday && errors.tuesday.message}
 				/>
 				<OpeningInput
 					id="wednesday"
@@ -137,7 +129,6 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 					setValue={setValue}
 					register={register}
 					error={!!errors.wednesday}
-					errorMessage={errors.wednesday && errors.wednesday.message}
 				/>
 				<OpeningInput
 					id="thursday"
@@ -145,7 +136,6 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 					setValue={setValue}
 					register={register}
 					error={!!errors.thursday}
-					errorMessage={errors.thursday && errors.thursday.message}
 				/>
 				<OpeningInput
 					id="friday"
@@ -153,7 +143,6 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 					setValue={setValue}
 					register={register}
 					error={!!errors.friday}
-					errorMessage={errors.friday && errors.friday.message}
 				/>
 				<OpeningInput
 					id="saturday"
@@ -161,17 +150,9 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 					setValue={setValue}
 					register={register}
 					error={!!errors.saturday}
-					errorMessage={errors.saturday && errors.saturday.message}
 				/>
 				<hr />
-				<h3
-					className="
-						text-xl
-						font-bold
-				"
-				>
-					Localização
-				</h3>
+				<h3 className="text-xl font-bold">Localização</h3>
 				<DefaultInput
 					id="zipCode"
 					type="text"
@@ -210,7 +191,7 @@ const AddRestaurant = ({ categories }: AddRestaurantProps) => {
 					errorMessage={errors.number && errors.number.message}
 				/>
 
-				<SolidButton label="Registrar" type="submit" />
+				<SolidButton disabled={loading} label="Registrar" type="submit" />
 			</form>
 		</ModalContainer>
 	);
